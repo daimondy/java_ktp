@@ -1,12 +1,4 @@
 import java.util.HashMap;
-
-/**
- * This class stores the basic state necessary for the A* algorithm to compute a
- * path across a map.  This state includes a collection of "open waypoints" and
- * another collection of "closed waypoints."  In addition, this class provides
- * the basic operations that the A* pathfinding algorithm needs to perform its
- * processing.
- **/
 public class AStarState
 {
 	/** This is a reference to the map that the A* algorithm is navigating. **/
@@ -64,15 +56,6 @@ public class AStarState
 		return rez;
 	}
 
-	/**
-	 * This method adds a waypoint to (or potentially updates a waypoint already
-	 * in) the "open waypoints" collection.  If there is not already an open
-	 * waypoint at the new waypoint's location then the new waypoint is simply
-	 * added to the collection.  However, if there is already a waypoint at the
-	 * new waypoint's location, the new waypoint replaces the old one <em>only
-	 * if</em> the new waypoint's "previous cost" value is less than the current
-	 * waypoint's "previous cost" value.
-	 **/
 	public boolean addOpenWaypoint(Waypoint newWP)
 	{
 		Waypoint other = openWaypoints.get(newWP.loc);
