@@ -1,6 +1,6 @@
 import java.awt.geom.Rectangle2D;
 
-import lab4.FractalGenerator;
+import lab5.FractalGenerator;
 
 public class Mandelbrot extends FractalGenerator{
 
@@ -10,8 +10,8 @@ public class Mandelbrot extends FractalGenerator{
 	/*Позволяет генератору фракталов определить наиболее интересную
 	область для фрактала*/
 	/*Устанавливаем начаный диапазон от (-2 - 1.5i) до (1 + 1.5i)
-    Значения x, y будут равны -2 и -1.5
-    Ширина и высота равны 3*/
+	Значения x, y будут равны -2 и -1.5
+	Ширина и высота равны 3*/
 	public void getInitialRange(Rectangle2D.Double range)
 	{
 		//Диапазон фрактала
@@ -23,10 +23,10 @@ public class Mandelbrot extends FractalGenerator{
 	}
 
 	 /*Для фрактала Мандельброта функция z_n = (z_(n-1))^2 + c, 
-    c-это особая точка во фрактале, которую мы показываем. 
-    Это вычисление повторяется до тех пор, пока либо |z| > 2
-    или до тех пор, пока число итераций не достигнет максимального значения,
-    например 2000*/
+	c-это особая точка во фрактале, которую мы показываем. 
+	Это вычисление повторяется до тех пор, пока либо |z| > 2
+	или до тех пор, пока число итераций не достигнет максимального значения,
+	например 2000*/
 	//итеративная функция для фракталов
 	public int numIterations(double x, double y)
 	{
@@ -59,7 +59,7 @@ public class Mandelbrot extends FractalGenerator{
 	}
 
 	public static String nameString()
-    {
-        return "Mandelbrot";
-    }
+	{
+		return "Mandelbrot";
+	}
 }
