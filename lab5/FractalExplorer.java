@@ -1,5 +1,3 @@
-package lab5;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -21,8 +19,6 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
-import lab5.fractal.*;
 
 public class FractalExplorer {
 	
@@ -51,15 +47,15 @@ public class FractalExplorer {
 
 				if(selectedItem.equals(Mandelbrot.nameString()))
 				{
-					_gen = new Mandelbrot();
+					_generate = new Mandelbrot();
 				}
 				else if(selectedItem.equals(Tricorn.nameString()))
 				{
-					_gen = new Tricorn();
+					_generate = new Tricorn();
 				}
 				else if(selectedItem.equals(BurningShip.nameString()))
 				{
-					_gen = new BurningShip();
+					_generate = new BurningShip();
 				}
 				else
 				{
@@ -68,14 +64,14 @@ public class FractalExplorer {
 				}
 				
 				_range = new Rectangle2D.Double();
-				_gen.getInitialRange(_range);
+				_generate.getInitialRange(_range);
 				
 				drawFractal();
 			} 
 			else if (cmd.equals("reset")) 
 			{ 
 				_range = new Rectangle2D.Double();
-				_gen.getInitialRange(_range);
+				_generate.getInitialRange(_range);
 				
 				drawFractal();
 			} 
@@ -91,14 +87,14 @@ public class FractalExplorer {
 				{
 					try 
 					{
-						File fd = chooser.getSelectedFile();
-						String filePath = fd.getPath();
+						File find = chooser.getSelectedFile();
+						String filePath = find.getPath();
 						if(!filePath.toLowerCase().endsWith(".png"))
 						{
-							fd = new File(filePath + ".png");
+							find = new File(filePath + ".png");
 						}
 						
-						ImageIO.write(_image.getImage(), "png", fd);
+						ImageIO.write(_image.getImage(), "png", find);
 					} 
 					catch (IOException exc) 
 					{
@@ -115,26 +111,16 @@ public class FractalExplorer {
 		} 
 	}
 
-	private class ResetHandler implements ActionListener 
-	{ 
-		public void actionPerformed(ActionEvent e) 
-		{ 
-			_range = new Rectangle2D.Double();
-			_generate.getInitialRange(_range);
-			
-			drawFractal();
-		} 
-	}
 	
 	//Обработка событий мыши
-	private class MouseHandler extends MouseAdapter 
+	 private class MouseHandler extends MouseAdapter 
 	{ 
 		public void mouseClicked(MouseEvent e)
 		{ 
-			double xCoord = FractalGenerator.getCoord(_range.x, _range.x + _range.width, _displaySize, e.getX());
-			double yCoord = FractalGenerator.getCoord(_range.y, _range.y + _range.height, _displaySize, e.getY());
+			double xCoord = getFractaleXcoord(e.getX());
+			double yCoord = getFractaleYcoord(e.getY());
 			
-			_generate.recenterAndZoomRange(_range,xCoord, yCoord, 0.5);
+			_gen.recenterAndZoomRange(_range,xCoord, yCoord, 0.5);
 			
 			drawFractal();
 		} 
@@ -206,7 +192,7 @@ public class FractalExplorer {
 	}
 	
 	//Вывод на экран фракталов
-	private void drawFractal()
+	public void drawFractal()
 	{
 		double xCoord = 0;
 		double yCoord = 0;
@@ -218,14 +204,14 @@ public class FractalExplorer {
 		
 		for(int x = 0 ; x < _displaySize ; ++x)
 		{
-			//x - пиксельная координата, xCoord - координата в пространстве фрактала
-			xCoord = FractalGenerator.getCoord(_range.x, _range.x + _range.width, _displaySize, x);
+			//x -  координата
+			xCoord =  getFractaleXcoord(x);
 			
 			for(int y = 0 ; y < _displaySize ; ++y)
 			{
-				//y - пиксельная координата, yCoord - координата в пространстве фрактала
-				yCoord = FractalGenerator.getCoord(_range.y, _range.y + _range.height, _displaySize, y);
-				
+				//y - координата
+				yCoord = getFractaleYcoord(y);
+
 				numIters = _generate.numIterations(xCoord, yCoord);
 				if(numIters < 0)
 				{

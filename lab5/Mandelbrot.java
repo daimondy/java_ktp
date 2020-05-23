@@ -1,7 +1,5 @@
 import java.awt.geom.Rectangle2D;
 
-import lab5.FractalGenerator;
-
 public class Mandelbrot extends FractalGenerator{
 
 	//Константа с максимальным числом интераций
