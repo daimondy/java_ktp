@@ -1,5 +1,6 @@
 import java.awt.geom.Rectangle2D;
 
+
 /**
  * This class provides the common interface and operations for fractal
  * generators that can be viewed in the Fractal Explorer.
@@ -31,11 +32,13 @@ public abstract class FractalGenerator {
 		return rangeMin + (range * (double) coord / (double) size);
 	}
 
+
 	/**
 	 * Sets the specified rectangle to contain the initial range suitable for
 	 * the fractal being generated.
 	 */
 	public abstract void getInitialRange(Rectangle2D.Double range);
+
 
 	/**
 	 * Updates the current range to be centered at the specified coordinates,
@@ -53,6 +56,7 @@ public abstract class FractalGenerator {
 		range.height = newHeight;
 	}
 
+
 	/**
 	 * Given a coordinate <em>x</em> + <em>iy</em> in the complex plane,
 	 * computes and returns the number of iterations before the fractal
@@ -62,3 +66,4 @@ public abstract class FractalGenerator {
 	 */
 	public abstract int numIterations(double x, double y);
 }
+

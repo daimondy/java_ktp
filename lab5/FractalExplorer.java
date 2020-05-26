@@ -21,19 +21,25 @@ import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class FractalExplorer {
-	
+
 	//Ширина и высота экрана
 	private int _displaySize;
-	
+
 	/*Ссылка для обновления отображения в разных методах 
 	в процессе вычсиления фракталов*/
 	private JImageDisplay _image;
 	
+	//Поддержка мульти фракталов
+	private JComboBox<String> _fractalChooser;
+	
+	//Рамка пользоватеьского интерфейса
+	private JFrame _frame;
+
 	//Ссылка на базовый класс для отображения других видов фракталов в будущем
 	private FractalGenerator _generate;
 	
-	//Диапазон комплексной плоскости
-	private Rectangle2D.Double _range;
+	//указание диапазона комплексной плоскости, которую мы сейчас показываем
+	Rectangle2D.Double _range;
 
 	private class FractalHandler implements ActionListener 
 	{ 
@@ -87,14 +93,14 @@ public class FractalExplorer {
 				{
 					try 
 					{
-						File find = chooser.getSelectedFile();
-						String filePath = find.getPath();
+						File fd = chooser.getSelectedFile();
+						String filePath = fd.getPath();
 						if(!filePath.toLowerCase().endsWith(".png"))
 						{
-							find = new File(filePath + ".png");
+							fd = new File(filePath + ".png");
 						}
 						
-						ImageIO.write(_image.getImage(), "png", find);
+						ImageIO.write(_image.getImage(), "png", fd);
 					} 
 					catch (IOException exc) 
 					{
@@ -110,17 +116,16 @@ public class FractalExplorer {
 			}
 		} 
 	}
-
 	
 	//Обработка событий мыши
-	 private class MouseHandler extends MouseAdapter 
+	private class MouseHandler extends MouseAdapter 
 	{ 
 		public void mouseClicked(MouseEvent e)
 		{ 
 			double xCoord = getFractaleXcoord(e.getX());
 			double yCoord = getFractaleYcoord(e.getY());
 			
-			_gen.recenterAndZoomRange(_range,xCoord, yCoord, 0.5);
+			_generate.recenterAndZoomRange(_range,xCoord, yCoord, 0.5);
 			
 			drawFractal();
 		} 
@@ -135,7 +140,7 @@ public class FractalExplorer {
 		_range = new Rectangle2D.Double();
 		_generate.getInitialRange(_range);
 	}
-
+	
 	//инициализация графического интерфейса
 	public void createAndShowGUI()
 	{
@@ -147,7 +152,7 @@ public class FractalExplorer {
 		
 		FractalHandler handler = new FractalHandler();
 		
-		//Панель выбора фрактала
+		//выбор панели с фракталами
 		JPanel fractalPanel = new JPanel();
 		
 		JLabel panelLabel = new JLabel("Fractal: ");
@@ -167,16 +172,16 @@ public class FractalExplorer {
 		_image = new JImageDisplay(_displaySize, _displaySize);
 		contentPane.add(_image, BorderLayout.CENTER);
 		
-		//Панель выбора фрактала
+		//выбор панели с фракталами
 		JPanel buttonsPanel = new JPanel();
 		
-		//Кнопка сохранения
+		//кнопка сохранения
 		JButton saveButton = new JButton("Save Image");
 		saveButton.setActionCommand("save"); 
 		saveButton.addActionListener(handler);
 		buttonsPanel.add(saveButton);
 		
-		//Кнопка сброса
+		//кнопка сброса
 		JButton resetButton = new JButton("Reset Display");
 		resetButton.setActionCommand("reset"); 
 		resetButton.addActionListener(handler);
@@ -205,13 +210,13 @@ public class FractalExplorer {
 		for(int x = 0 ; x < _displaySize ; ++x)
 		{
 			//x -  координата
-			xCoord =  getFractaleXcoord(x);
+			xCoord = getFractaleXcoord(x);
 			
 			for(int y = 0 ; y < _displaySize ; ++y)
 			{
 				//y - координата
 				yCoord = getFractaleYcoord(y);
-
+				
 				numIters = _generate.numIterations(xCoord, yCoord);
 				if(numIters < 0)
 				{
@@ -232,20 +237,22 @@ public class FractalExplorer {
 		_image.repaint();
 	}
 	
+
 	private double getFractaleXcoord(int x)
 	{
 		return FractalGenerator.getCoord(_range.x, _range.x + _range.width, _displaySize, x);
 	}
 	
+
 	private double getFractaleYcoord(int y)
 	{
 		return FractalGenerator.getCoord(_range.y, _range.y + _range.height, _displaySize, y);
 	}
 	
-	//Запуск для FractalExplorer
+	//zапуск для FractalExplorer
 	public static void main(String[] args) 
 	{
-		FractalExplorer explorer = new FractalExplorer (800);
+		FractalExplorer explorer = new FractalExplorer (400);
 		explorer.createAndShowGUI();
 		explorer.drawFractal();
 	} 

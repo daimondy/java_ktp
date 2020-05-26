@@ -10,7 +10,7 @@ public class JImageDisplay extends JComponent{
 	//Принимает целочисленные значения ширины и высоты
 	public JImageDisplay(int width, int height)
 	{
-		//инициирует объект новым изображением с шириной и высотой
+		//нициирует объект новым изображением с шириной и высотой
 		_image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		
 		//Включения изображения в пользовательский интерфейс
@@ -39,5 +39,10 @@ public class JImageDisplay extends JComponent{
 	public void drawPixel(int x, int y, int rgbColor)
 	{
 		_image.setRGB(x, y, rgbColor);
+	}
+
+	public BufferedImage getImage()
+	{
+		return _image;
 	}
 }
