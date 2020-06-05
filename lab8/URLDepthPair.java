@@ -4,30 +4,34 @@ import java.net.URL;
 
 //Хранит URL-адреса и глубину, на которой они были исследованы
 public class URLDepthPair {
-
 	// Регулярное выражение для URL-адреса
-	public static final String URL_PREFIX = "http://";
+	public static final String URL_PREFIX = "http:";
 
 	public String URL;
 
-	public int depth;
+	private int depth;
+
+	URL host_path;
 
 	// Предполагает ввод URL-адрес абсолютный URL-адрес
 	public URLDepthPair (String URL, int depth){
 		this.URL=URL;
 		this.depth=depth;
+		try {
+			this.host_path= new URL(URL);
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
 	}
 
 	//Возвращает имя хоста сервера, указанное в URL-адресе
-	public String getHost() throws MalformedURLException {
-		URL host = new URL(URL);
-		return host.getHost();
+	public String getHost(){
+		return host_path.getHost();
 	}
 
 	//Возвращает ресурс на сервере
-	public String getPath() throws MalformedURLException {
-		URL path = new URL(URL);
-		return path.getPath();
+	public String getPath(){
+		return host_path.getPath();
 	}
 
 	// Возвращает глубину поиска URL-адреса 
